@@ -6,7 +6,7 @@
     <link rel="icon" href="../icon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../styles.css">
-    <title>IIT Bombay - Apply</title>
+    <title>IIT Bombay - Placement Application</title>
 </head>
 
 <body>
@@ -24,9 +24,38 @@
             </li>
         </div>
     </div>
-    <div class="body">
-        NO BODY HERE
+
+    <div class="apply">
+        <h1>Placement Application Form</h1>
+        <form action="submit_placement_form" method="post">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required><br><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br><br>
+
+            <label for="phone">Phone:</label>
+            <input type="tel" id="phone" name="phone" required><br><br>
+
+            <label for="degree">Degree:</label>
+            <input type="text" id="degree" name="degree" required><br><br>
+
+            <label for="department">Department:</label>
+            <input type="text" id="department" name="department" required><br><br>
+
+            <label for="cgpa">CGPA:</label>
+            <input type="text" id="cgpa" name="cgpa" required><br><br>
+
+            <label for="skills">Key Skills:</label><br>
+            <textarea id="skills" name="skills" rows="4" required></textarea><br><br>
+
+            <label for="resume">Upload Resume:</label>
+            <input type="file" id="resume" name="resume" accept=".pdf, .doc, .docx" required><br><br>
+
+            <input type="submit" value="Submit">
+        </form>
     </div>
+
     <div class="footer">
         <p>Copyright © 2023 IIT Bombay. All rights reserved.</p>
     </div>

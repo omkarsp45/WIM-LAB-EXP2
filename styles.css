@@ -234,3 +234,83 @@ tr:hover {
 .contact button:hover {
     background-color: #5aa8a8;
 }
+
+.apply {
+    padding: 50px;
+    margin-top: 50px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px, rgba(0, 0, 0, 0.05) 0px 4px 6px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.apply h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #333;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.apply label {
+    font-size: 18px;
+    color: #444;
+    font-weight: 500;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.apply input[type="text"],
+.apply input[type="email"],
+.apply input[type="tel"],
+.apply textarea {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #f2f2f2;
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.apply input[type="text"]:focus,
+.apply input[type="email"]:focus,
+.apply input[type="tel"]:focus,
+.apply textarea:focus {
+    border-color: #7ec4c4;
+    box-shadow: 0 0 8px rgba(126, 196, 196, 0.5);
+}
+
+.apply textarea {
+    height: 150px;
+    resize: none;
+}
+
+.apply input[type="file"] {
+    font-size: 16px;
+    color: #444;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.apply input[type="submit"] {
+    width: 100%;
+    padding: 15px;
+    background-color: #7ec4c4;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.apply input[type="submit"]:hover {
+    background-color: #5aa8a8;
+}
