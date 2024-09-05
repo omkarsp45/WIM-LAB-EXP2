@@ -27,7 +27,7 @@
 
     <div class="apply">
         <h1>Placement Application Form</h1>
-        <form action="submit_placement_form" method="post">
+        <form id="form1" action="/submit_form1" method="get">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required><br><br>
 
@@ -49,16 +49,42 @@
             <label for="skills">Key Skills:</label><br>
             <textarea id="skills" name="skills" rows="4" required></textarea><br><br>
 
-            <label for="resume">Upload Resume:</label>
-            <input type="file" id="resume" name="resume" accept=".pdf, .doc, .docx" required><br><br>
-
             <input type="submit" value="Submit">
         </form>
     </div>
-
+    <center>
+        <button><a href="entries.html">Show Entries</a></button>
+    </center>
     <div class="footer">
         <p>Copyright © 2023 IIT Bombay. All rights reserved.</p>
     </div>
+    <script>
+        document.getElementById('form1').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const degree = document.getElementById('degree').value;
+            const department = document.getElementById('department').value;
+            const cgpa = document.getElementById('cgpa').value;
+            const skills = document.getElementById('skills').value;
+            const placementData = {
+                name: name,
+                email: email,
+                phone: phone,
+                degree: degree,
+                department: department,
+                cgpa: cgpa,
+                skills: skills
+            };
+            let data = localStorage.getItem('placementData');
+            data = data ? JSON.parse(data) : [];
+            data.push(placementData);
+            localStorage.setItem('placementData', JSON.stringify(data));
+            document.getElementById('form1').reset();
+            alert('Data saved successfully!');
+        });
+    </script>
 </body>
 
 </html>

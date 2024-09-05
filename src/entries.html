@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="../icon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles.css">
+    <title>IIT Bombay - Student Form Responses</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        td {
+            width: 100%;
+            padding: 10px;
+        }
+        .name-row {
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+            width: 100%;
+        }
+        .details {
+            display: none;
+        }
+        .name-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 10px;
+        }
+        .student-name {
+            text-align: left;
+            font-weight: bold;
+            flex-grow: 1;
+        }
+        .expand-symbol {
+            font-weight: bold;
+            cursor: pointer;
+            text-align: right;
+        }
+
+        .details-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            padding: 10px;
+        }
+        .details-content strong {
+            text-align: left;
+        }
+        .details-content p {
+            text-align: right;
+            margin: 0;
+        }
+        .name-row:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <div class="left">
+            <img src="../logo.png" alt="">
+            <h1><a href="../index.html">IIT, Bombay</a></h1>
+        </div>
+        <div class="right">
+            <li>
+                <ul><a href="../index.html">Home</a></ul>
+                <ul><a href="placement.html">Placement Report</a></ul>
+                <ul><a href="apply.html">Apply</a></ul>
+                <ul><a href="contact.html">Contact</a></ul>
+            </li>
+        </div>
+    </div>
+    
+    <div class="entries">
+        <h1>Entries</h1>
+        <table id="entriesTable">
+            <tbody id="placementDataBody">
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer">
+        <p>Copyright © 2023 IIT Bombay. All rights reserved.</p>
+    </div>
+
+    <script>
+        let data = localStorage.getItem('placementData');
+        data = data ? JSON.parse(data) : [];
+        const tbody = document.getElementById('placementDataBody');
+        
+        function toggleDetails(event) {
+            const detailsRow = event.target.closest('tr').nextElementSibling;
+            detailsRow.style.display = detailsRow.style.display === 'none' ? 'table-row' : 'none';
+        }
+        data.forEach(item => {
+            const nameRow = document.createElement('tr');
+            nameRow.classList.add('name-row');
+            nameRow.innerHTML = `
+                <td colspan="7">
+                    <div class="name-container">
+                        <span class="student-name">${item.name}</span>
+                        <span class="expand-symbol">+</span>
+                    </div>
+                </td>
+            `;
+            nameRow.addEventListener('click', toggleDetails);
+            const detailsRow = document.createElement('tr');
+            detailsRow.classList.add('details');
+            detailsRow.innerHTML = `
+                <td colspan="7">
+                    <div class="details-content">
+                        <strong>Name:</strong><p>${item.name}</p>
+                        <strong>Email:</strong><p>${item.email}</p>
+                        <strong>Phone:</strong><p>${item.phone}</p>
+                        <strong>Degree:</strong><p>${item.degree}</p>
+                        <strong>Department:</strong><p>${item.department}</p>
+                        <strong>CGPA:</strong><p>${item.cgpa}</p>
+                        <strong>Key Skills:</strong><p>${item.skills}</p>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(nameRow);
+            tbody.appendChild(detailsRow);
+        });
+    </script>
+
+</body>
+</html>
