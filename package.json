@@ -1,0 +1,12 @@
+{
+  "name": "task",
+  "version": "1.0.0",
+  "description": "This experiment focuses on designing an interactive and visually appealing profile webpage using basic HTML and CSS. The goal is to enhance the user experience by incorporating various data types and interactive elements, inspired by a reference profile page but extending its functionality and aesthetics.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

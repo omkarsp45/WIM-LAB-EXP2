@@ -12,19 +12,23 @@
             width: 100%;
             border-collapse: collapse;
         }
+
         td {
             width: 100%;
             padding: 10px;
         }
+
         .name-row {
             cursor: pointer;
             font-size: 20px;
             font-weight: bold;
             width: 100%;
         }
+
         .details {
             display: none;
         }
+
         .name-container {
             display: flex;
             justify-content: space-between;
@@ -32,11 +36,13 @@
             width: 100%;
             padding: 10px;
         }
+
         .student-name {
             text-align: left;
             font-weight: bold;
             flex-grow: 1;
         }
+
         .expand-symbol {
             font-weight: bold;
             cursor: pointer;
@@ -49,18 +55,41 @@
             gap: 10px;
             padding: 10px;
         }
+
         .details-content strong {
             text-align: left;
         }
+
         .details-content p {
             text-align: right;
             margin: 0;
         }
+
         .name-row:hover {
             background-color: #f0f0f0;
         }
+
+        /* Styling for the download button */
+        #downloadContainer {
+            margin: 20px 0;
+        }
+
+        #downloadBtn {
+            padding: 10px 15px;
+            font-size: 16px;
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #downloadBtn:hover {
+            background-color: #004494;
+        }
     </style>
 </head>
+
 <body>
     <div class="nav">
         <div class="left">
@@ -76,7 +105,7 @@
             </li>
         </div>
     </div>
-    
+
     <div class="entries">
         <h1>Entries</h1>
         <table id="entriesTable">
@@ -85,19 +114,26 @@
         </table>
     </div>
 
+    <center>
+        <div id="downloadContainer">
+            <button id="downloadBtn" onclick="downloadEntries()">Download Entries</button>
+        </div>
+    </center>
+
     <div class="footer">
         <p>Copyright © 2023 IIT Bombay. All rights reserved.</p>
     </div>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script>
         let data = localStorage.getItem('placementData');
         data = data ? JSON.parse(data) : [];
         const tbody = document.getElementById('placementDataBody');
-        
+
         function toggleDetails(event) {
             const detailsRow = event.target.closest('tr').nextElementSibling;
             detailsRow.style.display = detailsRow.style.display === 'none' ? 'table-row' : 'none';
         }
+
         data.forEach(item => {
             const nameRow = document.createElement('tr');
             nameRow.classList.add('name-row');
@@ -110,6 +146,7 @@
                 </td>
             `;
             nameRow.addEventListener('click', toggleDetails);
+
             const detailsRow = document.createElement('tr');
             detailsRow.classList.add('details');
             detailsRow.innerHTML = `
@@ -128,7 +165,68 @@
             tbody.appendChild(nameRow);
             tbody.appendChild(detailsRow);
         });
-    </script>
 
+        function downloadEntries() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const marginX = 20;
+            let cursorY = 20;
+
+            // Set the title
+            const title = 'Placement Application Entries';
+            doc.setFont("Helvetica", "bold");
+            doc.setFontSize(24);
+            doc.setTextColor(0, 51, 102);
+
+            // Center the title
+            const titleWidth = doc.getTextWidth(title);
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const titleX = (pageWidth - titleWidth) / 2;
+
+            doc.text(title, titleX, cursorY);
+            cursorY += 15;
+
+            doc.setFontSize(12);
+            doc.setFont("Helvetica", "normal");
+            doc.setTextColor(0, 0, 0);
+
+            data.forEach(item => {
+                const boxHeight = 50;
+                const boxY = cursorY;
+                doc.rect(marginX - 2, boxY - 5, 180, boxHeight, 'S');
+
+                doc.text(`Name: ${item.name}`, marginX, cursorY);
+                cursorY += 7;
+                doc.text(`Email: ${item.email || "Not provided"}`, marginX, cursorY);
+                cursorY += 7;
+                doc.text(`Phone: ${item.phone || "Not provided"}`, marginX, cursorY);
+                cursorY += 7;
+                doc.text(`Degree: ${item.degree || "Not provided"}`, marginX, cursorY);
+                cursorY += 7;
+                doc.text(`Department: ${item.department || "Not provided"}`, marginX, cursorY);
+                cursorY += 7;
+                doc.text(`CGPA: ${item.cgpa || "Not provided"}`, marginX, cursorY);
+                cursorY += 7;
+                doc.text(`Key Skills: ${item.skills || "Not provided"}`, marginX, cursorY);
+                cursorY += 10;
+
+                // Check if we need to add a new page
+                if (cursorY > 250) {
+                    doc.addPage();
+                    cursorY = 20;
+                    // Set title again on the new page
+                    const newTitleX = (pageWidth - titleWidth) / 2;
+                    doc.text(title, newTitleX, cursorY);
+                    cursorY += 15;
+                }
+            });
+            doc.save('student_portfolios.pdf');
+        }
+
+        if (data.length > 0) {
+            document.getElementById('downloadContainer').style.display = 'block';
+        }
+    </script>
 </body>
+
 </html>
