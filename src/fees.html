@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="images/icon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Fees Payment</title>
+    <style>
+        /* Style improvements */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .payment-form {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .payment-form h2 {
+            color: #0056b3;
+            text-align: center;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #0056b3;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #004494;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #555;
+        }
+
+        #receiptContent {
+            font-family: Arial, sans-serif;
+            color: #333;
+            padding: 20px;
+            background-color: #f8f9fa;
+            max-width: 600px;
+            margin: 20px auto;
+            display: none;
+        }
+
+        #receiptContent h2 {
+            color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table td {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="nav">
+        <div class="left">
+            <img src="images/logo.png" alt="">
+            <h1><a href="index.html">IIT, Bombay</a></h1>
+        </div>
+        <div class="right">
+            <li>
+                <ul><a href="index.html">Home</a></ul>
+                <ul><a href="placement.html">Placement Report</a></ul>
+                <ul><a href="apply.html">Apply</a></ul>
+                <ul><a href="fees.html">Student Fees</a></ul>
+                <ul><a href="contact.html">Contact</a></ul>
+            </li>
+        </div>
+    </div>
+    <div class="payment-form">
+        <h2>Pay Fees</h2>
+        <form id="paymentForm">
+            <input type="text" id="name" name="name" placeholder="Your Name" required>
+            <input type="email" id="email" name="email" placeholder="Your Email" required>
+            <input type="text" id="studentId" name="studentId" placeholder="Student ID" required>
+            <input type="text" id="course" name="course" placeholder="Course" required>
+            <select id="semester" name="semester" required>
+                <option value="" disabled selected>Select Semester</option>
+                <option value="Semester 1">Semester 1</option>
+                <option value="Semester 2">Semester 2</option>
+                <option value="Semester 3">Semester 3</option>
+                <option value="Semester 4">Semester 4</option>
+            </select>
+            <select id="paymentMethod" name="paymentMethod" required>
+                <option value="" disabled selected>Select Payment Method</option>
+                <option value="Credit Card">Credit Card</option>
+                <option value="Debit Card">Debit Card</option>
+                <option value="Net Banking">Net Banking</option>
+                <option value="UPI">UPI</option>
+            </select>
+            <input type="text" id="amount" name="amount" placeholder="Amount" required>
+            <button type="submit">Pay Now</button>
+        </form>
+    </div>
+
+    <div id="receiptContent">
+        <h2>Payment Confirmation</h2>
+        <p>Dear <strong id="nameText"></strong>,</p>
+        <p>We have successfully received your payment of <strong>₹<span id="amountText"></span></strong>.</p>
+        <p>Below is your payment summary:</p>
+        <table>
+            <tr>
+                <td><strong>Name:</strong></td>
+                <td id="nameField"></td>
+            </tr>
+            <tr>
+                <td><strong>Student ID:</strong></td>
+                <td id="studentIdField"></td>
+            </tr>
+            <tr>
+                <td><strong>Course:</strong></td>
+                <td id="courseField"></td>
+            </tr>
+            <tr>
+                <td><strong>Semester:</strong></td>
+                <td id="semesterField"></td>
+            </tr>
+            <tr>
+                <td><strong>Payment Method:</strong></td>
+                <td id="paymentMethodField"></td>
+            </tr>
+            <tr>
+                <td><strong>Amount Paid:</strong></td>
+                <td>₹<span id="amountField"></span></td>
+            </tr>
+            <tr>
+                <td><strong>Payment Date:</strong></td>
+                <td id="paymentDateField"></td>
+            </tr>
+        </table>
+        <button id="downloadBtn">Download Receipt</button>
+    </div>
+
+    <div class="footer">
+        <p>Copyright © 2023 IIT Bombay. All rights reserved.</p>
+    </div>
+
+    <!-- Include jsPDF and html2canvas libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <script>
+        const form = document.getElementById('paymentForm');
+        const receiptContent = document.getElementById('receiptContent');
+        const downloadBtn = document.getElementById('downloadBtn');
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault(); // Prevent form submission
+
+            // Capture form values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const studentId = document.getElementById('studentId').value;
+            const course = document.getElementById('course').value;
+            const semester = document.getElementById('semester').value;
+            const paymentMethod = document.getElementById('paymentMethod').value;
+            const amount = document.getElementById('amount').value;
+
+            // Populate the receipt content
+            document.getElementById('nameText').innerText = name;
+            document.getElementById('nameField').innerText = name;
+            document.getElementById('studentIdField').innerText = studentId;
+            document.getElementById('courseField').innerText = course;
+            document.getElementById('semesterField').innerText = semester;
+            document.getElementById('paymentMethodField').innerText = paymentMethod;
+            document.getElementById('amountText').innerText = amount;
+            document.getElementById('amountField').innerText = amount;
+            document.getElementById('paymentDateField').innerText = new Date().toLocaleDateString();
+
+            // Show the receipt content
+            receiptContent.style.display = 'block';
+
+            // Send payment data to the server
+            fetch('http://localhost:3000/pay', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name,
+                    email,
+                    studentId,
+                    course,
+                    semester,
+                    paymentMethod,
+                    amount,
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    // Handle success or failure as needed
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+
+        downloadBtn.addEventListener('click', function () {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            html2canvas(receiptContent).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                doc.addImage(imgData, 'PNG', 10, 10);
+                doc.save('payment-receipt.pdf');
+            }).catch(error => {
+                console.error('Error capturing receipt:', error);
+            });
+        });
+    </script>
+</body>
+
+</html>
